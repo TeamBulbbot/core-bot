@@ -26,7 +26,10 @@ export async function handleInteractionButton(client: Client, interaction: Butto
 		await interaction.showModal(modal);
 		const modalResponse = await interaction.awaitModalSubmit({ filter: (i: any) => i.customId === "reasonModal" && i.user.id === interaction.user.id, time: 15_000 });
 
-		const body = modalResponse.fields.getTextInputValue("body");
+		let body = modalResponse.fields.getTextInputValue("body");
+		if (body) body += "\n\n";
+
+		body += `Issue created by **${interaction.user.tag}** \`(${interaction.user.id})\``;
 
 		const issue = await octokit.rest.issues.create({
 			owner: process.env.GITHUB_OWNER || "",
