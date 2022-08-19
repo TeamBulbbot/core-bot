@@ -61,7 +61,7 @@ export async function handleInteractionButton(client: Client, interaction: Butto
 
 		shell.cd("~/bulbbot");
 
-		const cmds: string[] = ["git pull", "rm -rf build", "rm -rf node_modules", "yarn install", "tsc", "pm2 restart bulbbot"];
+		const cmds: string[] = ["pm2 stop bulbbot", "git pull", "rm -rf build", "rm -rf node_modules", "yarn install", "tsc", "pm2 restart bulbbot"];
 		for (let cmd of cmds) {
 			shell.exec(cmd);
 		}
