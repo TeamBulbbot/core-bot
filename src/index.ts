@@ -41,8 +41,8 @@ client.on("threadCreate", async (thread) => {
 
 	const selects1 = new MessageActionRow().addComponents([
 		new MessageSelectMenu()
-			.setCustomId(`assingLabels|${thread.id}`)
-			.setPlaceholder("Assing labels to the issue")
+			.setCustomId(`assignLabels|${thread.id}`)
+			.setPlaceholder("Assign labels to the issue")
 			.addOptions([
 				{
 					label: "Bug",
