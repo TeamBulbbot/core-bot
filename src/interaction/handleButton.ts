@@ -2,7 +2,7 @@ import { ButtonInteraction, CacheType, Client, Modal, TextBasedChannel, TextChan
 import { disableButtons } from "../utils/utils";
 import { octokit } from "../index";
 import prisma from "../prisma";
-import { exec } from "child_process";
+import shell from "shelljs";
 
 export async function handleInteractionButton(client: Client, interaction: ButtonInteraction<CacheType>) {
 	if (interaction.customId.startsWith("ignore")) {
@@ -59,8 +59,12 @@ export async function handleInteractionButton(client: Client, interaction: Butto
 	} else if (interaction.customId.startsWith("deploy")) {
 		await interaction.deferReply();
 
-		const cmds: string[] = ["cd ~/bulbbot", "git pull", "rm -rf build", "rm -rf node_modules", "yarn install", "tsc", "yarn db:migrate", "pm2 restart bulbbot"];
-		exec(cmds.join(" && "));
+		shell.cd("~/bulbbot");
+
+		const cmds: string[] = ["git pull", "rm -rf build", "rm -rf node_modules", "yarn install", "tsc", "pm2 restart bulbbot"];
+		for (let cmd of cmds) {
+			shell.exec(cmd);
+		}
 
 		await interaction.followUp({
 			content: `Deployed \`${interaction.customId.split("|")[1]}\` successfully!`,
