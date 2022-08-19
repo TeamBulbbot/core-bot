@@ -8,7 +8,7 @@ export async function handleInteractionButton(client: Client, interaction: Butto
 	if (interaction.customId.startsWith("ignore")) {
 		await disableButtons(interaction.channel as TextBasedChannel, interaction.message.id);
 		return interaction.reply({
-			content: "Okey will not publish this!",
+			content: "Okay will not publish this!",
 		});
 	} else if (interaction.customId.startsWith("ghCreate")) {
 		const [_action, channelId, threadId] = interaction.customId.split("|");
