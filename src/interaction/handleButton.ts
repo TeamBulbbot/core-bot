@@ -60,7 +60,7 @@ export async function handleInteractionButton(client: Client, interaction: Butto
 		await interaction.deferReply();
 
 		const cmds: string[] = ["cd ~/bulbbot", "git pull", "rm -rf build", "rm -rf node_modules", "yarn install", "tsc", "yarn db:migrate", "pm2 restart bulbbot"];
-		exec(cmds.join(" & "));
+		exec(cmds.join(" && "));
 
 		await interaction.followUp({
 			content: `Deployed \`${interaction.customId.split("|")[1]}\` successfully!`,
