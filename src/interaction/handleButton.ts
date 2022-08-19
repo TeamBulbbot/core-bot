@@ -2,7 +2,7 @@ import { ButtonInteraction, CacheType, Client, Modal, TextBasedChannel, TextChan
 import { disableButtons } from "../utils/utils";
 import { octokit } from "../index";
 import prisma from "../prisma";
-import { spawn } from "child_process";
+import { exec } from "child_process";
 
 export async function handleInteractionButton(client: Client, interaction: ButtonInteraction<CacheType>) {
 	if (interaction.customId.startsWith("ignore")) {
@@ -58,34 +58,13 @@ export async function handleInteractionButton(client: Client, interaction: Butto
 		return;
 	} else if (interaction.customId.startsWith("deploy")) {
 		await interaction.deferReply();
-		const terminal = spawn("bash");
 
-		terminal.stdin.write("cd ~/bulbbot");
-		terminal.stdin.write("git pull");
-		terminal.stdin.write("rm -rf build");
-		terminal.stdin.write("rm -rf node_modules");
-		terminal.stdin.write("yarn install");
-		terminal.stdin.write("npx tsc");
-		terminal.stdin.write("yarn db:migrate");
-		terminal.stdin.write("pm2 restart bulbbot");
+		const cmds: string[] = ["cd ~/bulbbot", "git pull", "rm -rf build", "rm -rf node_modules", "yarn install", "tsc", "yarn db:migrate", "pm2 restart bulbbot"];
+		exec(cmds.join(" & "));
 
-		terminal.stdin.end();
-
-		terminal.stdout.on("data", (data) => {
-			console.log("stdout: " + data);
+		await interaction.followUp({
+			content: `Deployed \`${interaction.customId.split("|")[1]}\` successfully!`,
 		});
-
-		terminal.stderr.on("data", (data) => {
-			console.log("stderr: " + data);
-		});
-
-		terminal.on("exit", async (code) => {
-			console.log("child process exited with code " + code);
-
-			await interaction.followUp({
-				content: `Deployed \`${interaction.customId.split("|")[1]}\` successfully!`,
-			});
-			await disableButtons(interaction.channel as TextBasedChannel, interaction.message.id);
-		});
+		await disableButtons(interaction.channel as TextBasedChannel, interaction.message.id);
 	}
 }
