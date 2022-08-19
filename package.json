@@ -1,0 +1,27 @@
+{
+	"name": "core",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"watch": "tsc -w",
+		"dev": "nodemon build/index.js",
+		"generate": "prisma generate",
+		"db:migrate": "prisma migrate dev",
+		"db:deploy": "prisma migrate deploy",
+		"db:nuke": "prisma migrate reset",
+		"db:introspect": "prisma db pull",
+		"db:push": "prisma db push",
+		"db:format": "prisma format"
+	},
+	"dependencies": {
+		"@prisma/client": "^4.2.1",
+		"discord.js": "^13.8.0",
+		"dotenv": "^16.0.1",
+		"octokit": "^2.0.7",
+		"prisma": "^4.2.1"
+	},
+	"prisma": {
+		"schema": "src/prisma/schema.prisma"
+	}
+}

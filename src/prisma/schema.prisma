@@ -1,0 +1,20 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DB_URL")
+}
+
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialIntegrity"]
+}
+
+model User {
+    id       String  @id
+    flags    BigInt
+    githubId String?
+}
+
+model Issues {
+    id       String @id
+    threadId String
+}
