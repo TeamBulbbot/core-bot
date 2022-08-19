@@ -18,7 +18,7 @@ export async function handleInteractionSelect(_client: Client, interaction: Sele
 			ephemeral: true,
 		});
 
-	if (action === "assingLabels") {
+	if (action === "assignLabels") {
 		await octokit.rest.issues.addLabels({
 			issue_number: parseInt(dbIssue.id),
 			owner: process.env.GITHUB_OWNER || "",
